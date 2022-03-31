@@ -1,0 +1,57 @@
+name: Go
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+
+    - name: Test
+      run: go test ./...
+
+    - name: Build
+      run: |
+        export GOFLAGS="-buildmode=pie -trimpath"
+        go version
+        GOOS=linux   GOFLAGS="-trimpath" \
+          go build -o local-spring-vuln-scanner
+        GOOS=windows GOFLAGS="-buildmode=pie -trimpath" \
+          go build -o local-spring-vuln-scanner.exe
+        GOOS=darwin  GOFLAGS="-buildmode=pie -trimpath" \
+          go build -o local-spring-vuln-scanner.macosx
+        sha256sum \
+            local-spring-vuln-scanner \
+            local-spring-vuln-scanner.exe \
+            local-spring-vuln-scanner.macosx \
+        | awk 'BEGIN { print "# Binaries" } /^([0-9a-f]*)  (.*)$/ { print "- "$2": sha256="$1 }' \
+        > relnotes.txt
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      if: startsWith(github.ref, 'refs/heads/')
+      with:
+        name: my-artifact
+        path: |
+          local-spring-vuln-scanner
+          local-spring-vuln-scanner.exe
+          local-spring-vuln-scanner.macosx
+          relnotes.txt
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        body_path: relnotes.txt
+        files: |
+          local-spring-vuln-scanner
+          local-spring-vuln-scanner.exe
+          local-spring-vuln-scanner.macosx
+          README.md
+          LICENSE

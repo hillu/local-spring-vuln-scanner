@@ -14,12 +14,10 @@ The scan tool currently checks for known build artifacts that have
 been obtained through Maven Central. From-source rebuilds as they are
 done for Linux distributions may or may not be recognized.
 
-<!--
 Binaries for x86_64 Windows, Linux, MacOSX for tagged releases are
 provided via the
 [Releases](https://github.com/hillu/local-spring-vuln-scanner/releases)
 page.
--->
 
 # Using the scanner
 
