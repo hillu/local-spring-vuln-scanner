@@ -1,7 +1,6 @@
 package main
 
 import (
-	"archive/zip"
 	"bytes"
 	"flag"
 	"fmt"
@@ -19,7 +18,7 @@ func handleJar(path string, ra io.ReaderAt, sz int64) {
 	if verbose {
 		fmt.Fprintf(logFile, "Inspecting %s...\n", path)
 	}
-	zr, err := zip.NewReader(ra, sz)
+	zr, err := zipNewReader(ra, sz)
 	if err != nil {
 		fmt.Fprintf(logFile, "cant't open JAR file: %s (size %d): %v\n", path, sz, err)
 		return
