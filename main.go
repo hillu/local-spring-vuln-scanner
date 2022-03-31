@@ -119,7 +119,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s [--verbose] [--quiet] [--ignore-v1] [--exclude <path>] [--log <file>] [ paths ... ]\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %s [--verbose] [--quiet] [--exclude <path>] [--log <file>] [ paths ... ]\n", os.Args[0])
 		os.Exit(1)
 	}
 

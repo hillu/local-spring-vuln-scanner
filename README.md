@@ -23,7 +23,6 @@ page.
 
 ```
 $ ./local-spring-vuln-scanner [--verbose] [--quiet] \
-    [--ignore-v1] [--ignore-vulns=...] \
     [--exclude /path/to/exclude …] \
 	[--scan-network] \
 	[--log /path/to/file.log] \
