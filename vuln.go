@@ -9,8 +9,8 @@ type Vulnerabilities uint8
 
 func (v Vulnerabilities) String() string {
 	var tags []string
-	if v&CVE_spring4shell != 0 {
-		tags = append(tags, "spring4shell")
+	if v&CVE_2022_22965 != 0 {
+		tags = append(tags, "CVE-2022-22965")
 	}
 	return strings.Join(tags, ", ")
 }
@@ -18,9 +18,9 @@ func (v Vulnerabilities) String() string {
 func (v *Vulnerabilities) Set(s string) error {
 	*v = 0
 	for _, tag := range strings.Split(s, ",") {
-		switch strings.Trim(tag, " ") {
-		case "spring4shell":
-			*v |= CVE_spring4shell
+		switch strings.ToLower(strings.Trim(tag, " ")) {
+		case "cve-2022-22965", "spring4shell", "springshell":
+			*v |= CVE_2022_22965
 		case "":
 		default:
 			return fmt.Errorf("invalid vulnerability '%s'", tag)
@@ -30,10 +30,10 @@ func (v *Vulnerabilities) Set(s string) error {
 }
 
 const (
-	CVE_spring4shell = 1 << iota
+	CVE_2022_22965 = 1 << iota
 )
 
 const (
-	CheckDefaultVulnerabilities Vulnerabilities = CVE_spring4shell
+	CheckDefaultVulnerabilities Vulnerabilities = CVE_2022_22965
 	CheckAllVulnerabilities     Vulnerabilities = 0xff
 )

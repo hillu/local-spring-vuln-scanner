@@ -3,12 +3,11 @@
 (Written in Go because, you know, "write once, run anywhere.")
 
 This is a simple tool that can be used to find instances of Spring
-that are vulnerable to the recent "spring4shell" vulnerability in
-installations of Java software such as web applications. JAR and WAR
-archives are inspected and class files that are known to be vulnerable
-are flagged. The scan happens recursively: WAR files containing WAR
-files containing JAR files containing vulnerable class files ought to
-be flagged properly.
+vulnerable to CVE-2022-22965 ("SpringShell") in installations of Java
+software such as web applications. JAR and WAR archives are inspected
+and class files that are known to be vulnerable are flagged. The scan
+happens recursively: WAR files containing WAR files containing JAR
+files containing vulnerable class files ought to be flagged properly.
 
 The scan tool currently checks for known build artifacts that have
 been obtained through Maven Central. From-source rebuilds as they are
@@ -44,9 +43,9 @@ messages like the following are printed to standard output:
 ``` console
 local-spring-vuln-scanner - a simple local Spring vulnerability scanner
 
-Checking for vulnerabilities: spring4shell
+Checking for vulnerabilities: CVE-2022-22965
 examining /path/to/spring-boot-0.0.1-SNAPSHOT.jar
-indicator for vulnerable component found in /path/to/spring-boot-0.0.1-SNAPSHOT.jar::BOOT-INF/lib/spring-beans-5.3.17.jar (org/springframework/beans/CachedIntrospectionResults.class): CachedIntrospectionResults.class  spring 5.3.0-5.3.17 spring4shell
+indicator for vulnerable component found in /path/to/spring-boot-0.0.1-SNAPSHOT.jar::BOOT-INF/lib/spring-beans-5.3.17.jar (org/springframework/beans/CachedIntrospectionResults.class): CachedIntrospectionResults.class  spring 5.3.0-5.3.17 CVE-2022-22965
 
 Scan finished
 ```
