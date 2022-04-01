@@ -68,6 +68,7 @@ func handleJar(path string, ra io.ReaderAt, sz int64) {
 			if info := IsVulnerableClass(buf.Bytes(), file.Name, vulns); info != nil {
 				fmt.Fprintf(logFile, "indicator for vulnerable component found in %s (%s): %s %s %s\n",
 					path, file.Name, info.Filename, info.Version, info.Vulnerabilities&vulns)
+				findings += 1
 				continue
 			}
 		}
@@ -100,6 +101,7 @@ var logFileName string
 var quiet bool
 var vulns, ignoreVulns Vulnerabilities
 var network bool
+var findings uint
 
 func main() {
 	flag.Var(&excludes, "exclude", "paths to exclude (can be used multiple times)")
@@ -119,7 +121,7 @@ func main() {
 
 	if len(os.Args) < 2 {
 		fmt.Fprintf(os.Stderr, "Usage: %s [--verbose] [--quiet] [--exclude <path>] [--log <file>] [ paths ... ]\n", os.Args[0])
-		os.Exit(1)
+		os.Exit(2)
 	}
 
 	if logFileName != "" {
@@ -189,5 +191,11 @@ func main() {
 
 	if !quiet {
 		fmt.Println("\nScan finished")
+	}
+	if findings > 0 {
+		if !quiet {
+			fmt.Fprintf(logFile, "%d vulnerable classes found", findings)
+		}
+		os.Exit(1)
 	}
 }
